@@ -1,3 +1,7 @@
+Error_fun: Function of the post-selected SPAM error with a baseline offset.
+
+Getfunpara.m: Custom written function script for fitting equation parameters using nonlinear regression.
+
 Misc_Get_Shelved_Population.m: Get bright/dark state population from data files of photon counts.
 
 Misc_Get_StateFidel.m: Get SPAM measurement probabilities from data files of photon counts.
