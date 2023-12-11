@@ -16,14 +16,15 @@ Valid_Samples = Valid_Samples';
 Error_errorbar = sqrt(Error.*(1-Error)./Valid_Samples);
 x = abs(BfieldSensitivity.*BfieldSensitivity.*PiPulseTime.*PiPulseTime);
 x_plot = linspace(0,max(x),10000);
-[BETA,BETA_Err,Exitflag]=Getfunpara(@(P,x) Error_fun(P,x),[1/10000 0],x,Error);
+%[BETA,BETA_Err,Exitflag]=Getfunpara(@(P,x) Error_fun(P,x),[1/10000 0],x,Error);
+[BETA,BETA_Err,Exitflag]=Getfunpara(@(P,x) Error_fun(P,x),[1/1000000 0],x,Error);
 
 figure
 errorbar(x,Error,Error_errorbar,'ok');
 hold on
 plot(x_plot,Error_fun(BETA,x_plot),'k');
 axis([0 140000 0 0.36]);
-xlabel('\kappa^2 \tau_{\pi}^2 / MHz^2 µs^2 G^{-2}','interpreter','default','fontsize',18);
+xlabel('\kappa^2 \tau_{\pi}^2 [MHz^2 µs^2 G^{-2}]','interpreter','default','fontsize',18);
 ylabel([char(949) '_{SPAM}'],'interpreter','default','fontsize',18);
 l = legend('Data points','Functional fit','location','southeast');
 set(gca,'fontsize',16);

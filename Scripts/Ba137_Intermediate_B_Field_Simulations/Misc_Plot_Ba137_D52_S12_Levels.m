@@ -27,11 +27,14 @@
 B_e_array = 0:0.001:10; %Define magnetic field strengths in G.
 E_array = nan(24,numel(B_e_array)); %Initialize energy eigenvalues array for 5D-5/2
 eigvectors_array = nan(24,24,numel(B_e_array)); %Initialize energy eigenstates array for 5D-5/2
+C_const = 0;
+A_const = -12.030;
+B_const = 59.520;
 for hh=1:numel(B_e_array)
     if hh>1
         eigvectors_ref = eigvectors;
     end
-    [E_levels, eigvectors] = GetHyperfineEnergies(3/2,5/2,2,-12.028,59.533,B_e_array(hh)); %Computes energy eigenvalues and eigenstates for a given B.
+    [E_levels, eigvectors] = GetHyperfineEnergies(3/2,5/2,2,A_const,B_const,C_const,B_e_array(hh)); %Computes energy eigenvalues and eigenstates for a given B.
     if B_e_array(hh)>0.04 %0.04 Gauss is determined to the a point where the energy eigenvalues have not crossed each other. If B is larger than this value, 
         %a more complex sorting algorithm is used to sort the energy eigenvalues and eigenstates arrays.
         sort_index = nan(24,1);
@@ -63,7 +66,7 @@ for hh=1:numel(B_e_array)
     if hh>1
         eigvectors_ref = eigvectors;
     end
-    [E_levels, eigvectors] = GetHyperfineEnergies(3/2,1/2,0,4018.871,0,B_e_array(hh));
+    [E_levels, eigvectors] = GetHyperfineEnergies(3/2,1/2,0,4018.871,0,C_const,B_e_array(hh));
     if B_e_array(hh)>0.04
         sort_index = nan(8,1);
         E_levels_new = nan(8,1);

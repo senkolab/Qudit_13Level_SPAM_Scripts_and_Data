@@ -28,7 +28,7 @@ for h = 2:size(eigvectors_array,3)
     end
 end
 
-ytlabel = {'F = 4, m_F = -4';'F = 4, m_F = -3';...
+ytlabel = {'$\tilde{F} = 4, m_{\tilde{F}} = -4$';'F = 4, m_F = -3';...
     'F = 4, m_F = -2';'F = 4, m_F = -1';'F = 4, m_F = 0';...
     'F = 4, m_F = 1';'F = 4, m_F = 2';'F = 4, m_F = 3';...
     'F = 4, m_F = 4';'F = 3, m_F = -3';'F = 3, m_F = -2';...
@@ -54,9 +54,7 @@ for h=1:numel(p)
     IsLarge = abs(Fm_array(h,end))>0.001;
     pbool(h) = IsLarge;
     IsLargeCount = IsLargeCount + IsLarge;
-    if ~IsLarge
-        %p(h) = plot(B_e_array(2:end),Fm_array(h,2:end),'r','linewidth',2);
-    elseif IsLargeCount == 1
+    if IsLargeCount == 1
         p(h) = plot(B_e_array(2:end),Fm_array(h,2:end),'k','linewidth',2);
     elseif IsLargeCount == 2
         p(h) = plot(B_e_array(2:end),Fm_array(h,2:end),'k--','linewidth',2);
@@ -66,14 +64,15 @@ for h=1:numel(p)
         p(h) = plot(B_e_array(2:end),Fm_array(h,2:end),'k:','linewidth',2);
     end
 end
-l = legend(p(pbool==1),ytlabel{pbool==1},'location','best','fontsize',16);
+l = legend(p(pbool==1),ytlabel{pbool==1},'location','best','fontsize',14);
 pos = get(l,'Position');
-set(l,'Position',[0.58 0.32 pos(3) pos(4)]);
-xlabel('Magnetic field strength / Gauss','fontsize',18);
-ylabel('State amplitude','fontsize',18);
-title('$\tilde{F}=4, m_{\tilde{F}}=1$','interpreter','latex','fontsize',18);
+set(l,'Position',[0.58 0.37 pos(3) pos(4)]);
+xlabel('Magnetic field strength [Gauss]','fontsize',16);
+ylabel('State amplitude','fontsize',16);
+title('$\tilde{F}=4, m_{\tilde{F}}=1$','interpreter','latex','fontsize',16);
 axis([0 10 0 1]);
-set(gca,'fontsize',16);
+set(gca,'fontsize',14);
+set(gcf,'Position',[680   558   600   320]);
 box on
 
 pdfFilepath = 'C:\Users\pj3low\Documents\Qudit-Measurement-Paper_2022\Figures\';

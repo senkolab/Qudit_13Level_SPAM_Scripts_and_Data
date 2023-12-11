@@ -4,6 +4,8 @@
 %Magnetic field strength is hard-coded to be from 0 to 10 G in steps of 1
 %mG.
 
+pdfFilepath = 'C:\Users\pj3low\Documents\Qudit-Measurement-Paper_2022\Figures\'; %Define figure output filepath.
+
 Misc_Plot_Ba137_D52_S12_Levels; %Compute 6S_1/2 and 5D_5/2 energy eigenvalues and eigenstates.
 
 eigvectors_array = eigvectors_array_D52;
@@ -211,13 +213,13 @@ for F_ind = 1:numel(F_nums)
             end
         end
         l = legend(p(pbool==1),ytlabel{pbool==1},'location','southeast');
-        xlabel('Magnetic field strength / Gauss','fontsize',14);
-        ylabel('State amplitude');
+        xlabel('Magnetic field strength [Gauss]','fontsize',24);
+        ylabel('State amplitude','fontsize',24);
         axis([0 10 -1 1]);
         pdffilename = ['StateEvol_B_F' num2str(F_nums(F_ind)) 'm' num2str(m_ind) '.pdf'];
         %CustomSaveAsPDF; %This line is commented out as it is a custom
         %script written to save a MATLAB figure as a pdf file. As a
         %reference script, this is unnecessary.
-        close all
+        %close all
     end
 end

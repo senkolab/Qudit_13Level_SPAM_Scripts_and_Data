@@ -1,3 +1,4 @@
+function [eigvalues,eigvectors] = GetHyperfineEnergies(I_num,J_num,L_num,A_const,B_const,C_const,B_e)
 %A function to calculate energy eigenvalues and eigenvectors of a hyperfine
 %splitting Hamiltonian, by solving the Hamiltonian numerically. Includes
 %contribution from magnetic dipole and electric quadrupole.
@@ -25,9 +26,11 @@
 %B_const: A scalar number, representing the electric quadrupole hyperfine
 %structure constant in MHz.
 %
+%C_const: A scalar number, representing the octupole hyperfine
+%structure constant in MHz.
+%
 %B_e: A scalar number, representing the magnetic field strength in Gauss.
 
-function [eigvalues,eigvectors] = GetHyperfineEnergies(I_num,J_num,L_num,A_const,B_const,B_e)
 u_Bohr = 9.2740100783*10^(-28); %Bohr magneton in SI units.
 Plank_h = 6.62607015*10^(-34); %Planck constant in SI units.
 
@@ -83,7 +86,17 @@ IdotJ = (1/4).*kron(I_plus + I_minus, J_plus + J_minus)...
     + kron(I_z,J_z);
 
 %Construct hyperfine splitting Hamiltonian
-if B_const~=0
+
+if C_const~=0
+    H = A_const.*IdotJ...
+        + (B_const/(2*I_num*(2*I_num-1)*J_num*(2*J_num-1))).*...
+        (3.*IdotJ*IdotJ + (3/2).*IdotJ - (I_num*(I_num+1)*J_num*(J_num+1)).*kron(I_Iden,J_Iden))...
+        + (C_const/(I_num*(I_num-1)*(2*I_num-1)*J_num*(J_num-1)*(2*J_num-1))).*...
+        (10*IdotJ*IdotJ*IdotJ + 20*IdotJ*IdotJ...
+        + 2*IdotJ*(I_num*(I_num+1) + J_num*(J_num + 1) + 3 - 3*I_num*(I_num + 1)*J_num*(J_num+1))...
+        - 5*I_num*(I_num + 1)*J_num*(J_num + 1))...
+        + (10^(-6))*(B_e*u_Bohr/Plank_h).*(g_I.*kron(I_z,J_Iden) + g_J.*kron(I_Iden,J_z));
+elseif C_const == 0 && B_const~=0
     H = A_const.*IdotJ +...
         (B_const/(2*I_num*(2*I_num-1)*J_num*(2*J_num-1))).*...
         (3.*IdotJ*IdotJ + (3/2).*IdotJ - (I_num*(I_num+1)*J_num*(J_num+1)).*kron(I_Iden,J_Iden))...
@@ -91,7 +104,7 @@ if B_const~=0
 else
     H = A_const.*IdotJ +...
         (10^(-6))*(B_e*u_Bohr/Plank_h).*(g_I.*kron(I_z,J_Iden) + g_J.*kron(I_Iden,J_z));
-end    
+end  
 
 [eigvectors,D] = eig(H); %Solve for Hamiltonian
 eigvalues = diag(D);
